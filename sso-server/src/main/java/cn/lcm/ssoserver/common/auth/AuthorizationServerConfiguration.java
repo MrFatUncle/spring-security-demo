@@ -37,7 +37,7 @@ class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdap
                 .inMemory()
                 .withClient(Config.CLIENT_ID)
                 .secret(encoder.encode(Config.PASSWORD)).resourceIds("hi")
-                .authorizedGrantTypes(Config.GRANT_TYPE_PWF, Config.GRANT_TYPE_RT)
+                .authorizedGrantTypes(Config.GRANT_TYPE_PWD, Config.GRANT_TYPE_RT)
                 .scopes("read");
     }
 
@@ -63,7 +63,7 @@ class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdap
         private static final String CLIENT_ID = "myClient";
         private static final String PASSWORD = "123456";
 
-        private static final String GRANT_TYPE_PWF = "password";
+        private static final String GRANT_TYPE_PWD = "password";
         private static final String GRANT_TYPE_RT = "refresh_token";
 
 

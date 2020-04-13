@@ -1,0 +1,16 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: sso-client
+security:
+  oauth2:
+    client:
+      client-id: myClient
+      client-secret: 123456
+      access-token-uri: http://localhost:8081/oauth/token
+      user-authorization-uri: http://localhost:8081/oauth/authorize
+      scope: read
+      use-current-uri: false
+    resource:
+      user-info-uri: http://localhost:8081/oauth/user
