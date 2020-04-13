@@ -1,4 +1,4 @@
-package cn.lcm.springsecuritydemo;
+package cn.lcm.ssoserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 @SpringBootApplication
 @EnableResourceServer
-public class SpringSecurityDemoApplication {
+public class SsoServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringSecurityDemoApplication.class, args);
+        SpringApplication.run(SsoServerApplication.class, args);
     }
 
 }
