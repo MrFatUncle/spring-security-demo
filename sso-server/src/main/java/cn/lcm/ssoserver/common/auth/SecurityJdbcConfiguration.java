@@ -7,23 +7,37 @@
  */
 package cn.lcm.ssoserver.common.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
-//@Configuration
-//@EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+import javax.annotation.Resource;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityJdbcConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Resource(name = "authService")
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+
     @Bean
     public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+        RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
+
+        return tokenStore;
     }
 
     @Bean
@@ -33,11 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(encoder())
-                .withUser("user_1").password(encoder().encode("123456")).roles("USER")
-                .and()
-                .withUser("user_2").password(encoder().encode("123456")).roles("ADMIN");
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
